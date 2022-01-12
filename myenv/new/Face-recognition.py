@@ -56,6 +56,9 @@
 import os
 import io
 import json
+import sys
+import pickle
+from datetime import datetime
 from azure.cognitiveservices.vision.face import FaceClient
 from msrest.authentication import CognitiveServicesCredentials
 import requests
@@ -77,11 +80,23 @@ response_detected_faces = face_client.face.detect_with_stream(
     recognition_model='recognition_04',  
 )
 face_ids = [face.face_id for face in response_detected_faces]
-images = [r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Abhishek.jpeg',r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Akash.jpg']
-names = ['Abhishek','Akash']
-for i in range(len(images)):
+images_students = {r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Abhishek.jpeg':'Abhiskek',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Akash.jpg':'Akash',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Akshat.jpg':'Akshat',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Aman.jpg':'Aman',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Anish.jpg':'Anish',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Himanshu.jpg':'Himanshu',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Haneesh.jpeg':'Haneesh',
+r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Aditya.jpeg':'Aditya'}
+# names = ['Abhishek','Akash','Akshat','Aman','Anish','Himanshu','Haneesh','Aditya']
+# fh=open(os.path.join(sys.path[0], "students_data.txt"), "rb")
+# fh.seek(0)
+# images_students=pickle.load(fh)
+# fh.close()
+for i in (images_students.keys()):
     # img_source = open(r"C:\Users\saich\Desktop\DIP - Project\myenv\new\Prabhas.jpg", 'rb')
-    img_source = open(images[i], 'rb')
+    now=datetime.now()
+    img_source = open(i, 'rb')
     response_face_source = face_client.face.detect_with_stream(
         image=img_source,
         detection_model='detection_03',
@@ -108,5 +123,7 @@ for i in range(len(images)):
                 right = rect.width + left
                 bottom = rect.height + top
                 draw.rectangle(((left, top), (right, bottom)), outline='green', width=5)
-                print(names[i])
+                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+                print(images_students[i] , dt_string)
 img.show()
