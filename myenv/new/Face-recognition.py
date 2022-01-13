@@ -93,6 +93,7 @@ r'C:\Users\saich\Desktop\DIP - Project\myenv\new\Aditya.jpeg':'Aditya'}
 # fh.seek(0)
 # images_students=pickle.load(fh)
 # fh.close()
+res_dict=dict()
 for i in (images_students.keys()):
     # img_source = open(r"C:\Users\saich\Desktop\DIP - Project\myenv\new\Prabhas.jpg", 'rb')
     now=datetime.now()
@@ -124,6 +125,14 @@ for i in (images_students.keys()):
                 bottom = rect.height + top
                 draw.rectangle(((left, top), (right, bottom)), outline='green', width=5)
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-
-                print(images_students[i] , dt_string)
+                # print(images_students[i] , dt_string)
+                res_dict[dt_string]=images_students[i]
+# print(type(dt_string))
+for i in res_dict.keys():
+    print(i,res_dict[i])
 img.show()
+with open("students_data",'a') as fh:
+    for i in res_dict.keys():
+        fh.write(i+res_dict[i]+"\n")
+    fh.write("\n")
+
